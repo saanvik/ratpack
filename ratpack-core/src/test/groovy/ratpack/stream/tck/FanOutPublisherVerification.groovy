@@ -43,7 +43,7 @@ class FanOutPublisherVerification extends PublisherVerification<Integer> {
   }
 
   @Override
-  Publisher<Integer> createErrorStatePublisher() {
+  Publisher<Integer> createFailedPublisher() {
     null
   }
 }

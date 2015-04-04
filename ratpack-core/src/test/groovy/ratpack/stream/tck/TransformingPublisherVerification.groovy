@@ -42,7 +42,7 @@ class TransformingPublisherVerification extends PublisherVerification<String> {
   }
 
   @Override
-  Publisher<Integer> createErrorStatePublisher() {
+  Publisher<Integer> createFailedPublisher() {
     null
   }
 }

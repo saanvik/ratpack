@@ -44,7 +44,7 @@ class PeriodicPublisherVerification extends PublisherVerification<Integer> {
   }
 
   @Override
-  Publisher<Integer> createErrorStatePublisher() {
+  Publisher<Integer> createFailedPublisher() {
     null
   }
 }

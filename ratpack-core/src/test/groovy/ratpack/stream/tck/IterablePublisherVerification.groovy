@@ -42,7 +42,7 @@ class IterablePublisherVerification extends PublisherVerification<Long> {
   }
 
   @Override
-  Publisher<Integer> createErrorStatePublisher() {
+  Publisher<Integer> createFailedPublisher() {
     null // because subscription always succeeds. Nothing is attempted until a request is received.
   }
 }

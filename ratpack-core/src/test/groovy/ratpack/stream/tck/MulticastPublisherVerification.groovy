@@ -43,7 +43,7 @@ class MulticastPublisherVerification extends PublisherVerification<Integer> {
   }
 
   @Override
-  Publisher<Integer> createErrorStatePublisher() {
+  Publisher<Integer> createFailedPublisher() {
     null // because subscription always succeeds. Nothing is attempted until a request is received.
   }
 

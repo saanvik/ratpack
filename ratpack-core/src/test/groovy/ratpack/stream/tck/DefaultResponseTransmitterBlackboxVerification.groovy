@@ -82,6 +82,11 @@ class DefaultResponseTransmitterBlackboxVerification extends SubscriberBlackboxV
     }
   }
 
+  @Override
+  Integer createElement(int element) {
+    element
+  }
+
   def integerToByteBuf = new Function<Integer, ByteBuf>() {
     @Override
     ByteBuf apply(Integer i) throws Exception {

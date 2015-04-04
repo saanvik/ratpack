@@ -41,7 +41,7 @@ class WiretapPublisherVerification extends PublisherVerification<Integer> {
 
 
   @Override
-  Publisher<Integer> createErrorStatePublisher() {
+  Publisher<Integer> createFailedPublisher() {
     return null
   }
 }

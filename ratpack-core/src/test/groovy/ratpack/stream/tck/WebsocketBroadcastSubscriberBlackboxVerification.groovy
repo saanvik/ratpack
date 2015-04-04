@@ -56,4 +56,9 @@ class WebsocketBroadcastSubscriberBlackboxVerification extends SubscriberBlackbo
     }
   }
 
+  @Override
+  ByteBuf createElement(int element) {
+    Unpooled.wrappedBuffer([element.byteValue()] as byte[])
+  }
+
 }
