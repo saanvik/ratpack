@@ -42,7 +42,7 @@ buildscript {
 apply plugin: "io.ratpack.ratpack-java"
 
 task stage {
-  dependsOn installDist
+  dependsOn installApp
 }
 ```
 
