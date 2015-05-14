@@ -14,58 +14,57 @@ Ratpack's [Groovy adapter](groovy.html) uses the latest Groovy features to fully
 
 ## Non blocking
 
-Ratpack at its core is an event based (i.e. non-blocking) HTTP IO engine, and an API that makes it easy to structure response logic.
+Ratpack at its core is an event based (i.e. non-blocking) HTTP IO engine and an API that makes it easy to structure response logic.
 Being non blocking imposes a different style of API than “traditional” blocking Java APIs in that the API must be _asynchronous_.
 
 Ratpack aims to significantly simplify this style of programming for HTTP applications.
-It provides support for structuring asynchronous code (see the [“Asynchronous & Non Blocking”](async.html) chapter), 
+It provides support for structuring asynchronous code (see [`Asynchronous & Non Blocking`](async.html)), 
 and uses an innovative approach for structuring request processing into a self building, asynchronously traversed, graph of functions (it's nowhere near as complicated to use as that may sound).
   
 ## The parts   
+List the parts here
 
-> In the following section, “quotes” are used to denote key Ratpack terms and concepts.
+### The launch configuration
+A Ratpack application begins with a launch configuration, which provides the configuration that is needed to start the Ratpack server.  A Ratpack server can be built and started solely from a launch configuration.  See [`Launching`](launching.html) for more details on starting a Ratpack application.
 
-A Ratpack application begins with a “launch configuration”, which as you would assume provides the configuration that is needed to start the application.
-One key piece of configuration provided by the “launch configuration” is the “handler factory”, which given the “launch configuration” creates a “handler”.
-A Ratpack “server” can be built and started solely from a “launch configuration”.
-The “server” once started, starts listening for requests. 
-See the [“Launching”](launching.html) chapter for more detail on this aspect.
+### The handler factory and handlers
 
-The “handler” provided by the “handler factory” provided by the “launch configuration” is asked to respond to each request.
+One key piece of the launch configuration is the handler factory.  The handler factory can be configured to create one or more handlers.
+
 A handler can do one of three things:
 
 1. Respond to the request
-2. Delegate to the “next” handler
-3. “Insert” handlers and immediately delegate to them
+2. Delegate to the next handler
+3. Insert handlers and immediately delegate to them
 
-All request processing logic is simply the composition of handlers (see the [`Handlers`](handlers.html) chapter for more detail on this aspect). 
+All request processing logic is simply the composition of handlers (see [`Handlers`](handlers.html) for more detail on this aspect). 
 Importantly, the processing is not bound to a thread and can be completed asynchronously.
-The “handler” API supports this asynchronous composition.
+The handler API supports this asynchronous composition.
 
-Handlers operate on a “context”.
-A “context” represents the state of request processing at that particular point in the handler graph.
-One of its key functions is to act as a “registry”, that can be used to retrieve objects by type.
-This allows handlers to retrieve _strategy_ objects (typically just objects implementing key interfaces) from the “context” by public types.
+### The context
+A context represents the state of request processing at that particular point in the handler graph.
+One of the key functions of a context is to act as a registry.
+When a context object is given to a handler, the handler can retrieve _strategy objects_ (typically just objects implementing key interfaces) using a public type.
 As handlers insert other handlers into the handler graph, they can contribute to the context registry.
 This allows handlers to contribute code (as strategy objects) to downstream handlers.
-See the [“Context”](context.html) chapter for more detail, and the following section for how this context registry is used in practice.
+See [`Context`](context.html) for more detail, and the following section for how this context registry is used in practice.
 
 > This has been a high level, abstract, description of a Ratpack application.
 > It is likely unclear exactly how all this translates to real code.
 > The rest of this manual, and the accompanying API reference will provide the detail.
 
-## Plugins and extensibility through the Registry
+## Extensibility through the Registry
 
 Ratpack has no notion of plugins.
 However, add-on [integration with Google Guice](guice.html) facilitates a kind of plugin system through Guice modules.
 Guice is a dependency injection container.
 Guice modules define objects to be part of the dependency injection container.
 Guice modules can act as plugins by providing implementations of key Ratpack interfaces, that are used by handlers.
-When using the Guice integration, all of the objects known to Guice (typically through Guice modules) are obtainable via the “context registry”.
+When using the Guice integration, all of the objects known to Guice (typically through Guice modules) are obtainable via the context registry.
 That is, handlers can retrieve them by type.
 
 To see why this is useful, we will use the requirement of rendering an object as JSON to the response.
-The “context” object given to a “handler” has a [render(Object)](api/ratpack/handling/Context.html#render-java.lang.Object-) method.
+The context object given to a handler has a [render(Object)](api/ratpack/handling/Context.html#render-java.lang.Object-) method.
 The implementation of this method simply searches the context registry for an implementation of [`Renderer`](api/ratpack/render/Renderer.html)
 that can render objects of the given type. 
 Because objects available to Guice are available through the registry, they may be used for rendering.
@@ -91,5 +90,5 @@ There are two main patterns for access services from handlers:
 
 ### Asynchronous APIs in services
 
-One aspect of Ratpack that is relevant to non request handling code is the use of the [`ExecControl`](api/ratpack/exec/ExecControl.html) for performing asynchronous operations.
+One aspect of Ratpack that is relevant to non-request handling code is the use of the [`ExecControl`](api/ratpack/exec/ExecControl.html) for performing asynchronous operations.
 This allows services to perform async operations, using Ratpack's event loop, and use Ratpack's [`Promise`](api/ratpack/exec/Promise.html) API.
